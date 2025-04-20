@@ -21,7 +21,8 @@ const SearchBox = ({ value, onChange, onSubmit, inputRef }: SearchBoxProps) => {
       <button
         type="submit"
         disabled={!value.trim()}
-        className="bg-teal-700 text-white px-4 py-2 rounded disabled:bg-gray-400"
+        className="bg-teal-700 text-white px-4 py-2 rounded 
+             cursor-pointer disabled:cursor-not-allowed disabled:bg-gray-400"
       >
         Search
       </button>
