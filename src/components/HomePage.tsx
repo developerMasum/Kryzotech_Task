@@ -96,7 +96,7 @@ const HomePage = () => {
           </ul>
         )}
       </div>{" "}
-      <footer className="absolute bottom-4 right-4 text-sm text-gray-400">
+      <footer className="fixed bottom-4 right-4 text-sm text-gray-400 z-50">
         Created by{" "}
         <a
           href="https://portfolio-masum-fullstack.vercel.app/"
