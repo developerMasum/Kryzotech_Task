@@ -1,11 +1,11 @@
-import React from 'react';
+"use client";
 
-const Home = () => {
-  return (
-    <div>
-      this is homepage
-    </div>
-  );
-};
+import dynamic from "next/dynamic";
 
-export default Home;
+const HomePage = dynamic(() => import("@/components/HomePage"), {
+  ssr: false,
+});
+
+export default function Page() {
+  return <HomePage />;
+}
