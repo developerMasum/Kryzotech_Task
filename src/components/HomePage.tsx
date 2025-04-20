@@ -95,7 +95,27 @@ const HomePage = () => {
             ))}
           </ul>
         )}
-      </div>
+      </div>{" "}
+      <footer className="absolute bottom-4 right-4 text-sm text-gray-400">
+        Created by{" "}
+        <a
+          href="https://portfolio-masum-fullstack.vercel.app/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-teal-400 hover:underline"
+        >
+          MD MASUM
+        </a>{" "}
+        |
+        <a
+          href="https://github.com/developerMasum/Kryzotech_Task"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="ml-1 text-teal-400 hover:underline"
+        >
+          GitHub
+        </a>
+      </footer>
     </main>
   );
 };
