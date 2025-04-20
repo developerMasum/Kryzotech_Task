@@ -1,25 +1,27 @@
-// components/SearchBox.tsx
 import React from "react";
 
 interface SearchBoxProps {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  inputRef: React.RefObject<HTMLInputElement | null>;
 }
 
-const SearchBox: React.FC<SearchBoxProps> = ({ value, onChange, onSubmit }) => {
+const SearchBox = ({ value, onChange, onSubmit, inputRef }: SearchBoxProps) => {
   return (
-    <form onSubmit={onSubmit} className="mb-6 flex gap-2">
+    <form onSubmit={onSubmit} className="flex items-center space-x-2">
       <input
+        ref={inputRef}
         type="text"
-        placeholder="Search books by title..."
         value={value}
         onChange={onChange}
-        className="flex-1 border px-4 py-2 rounded shadow"
+        className="p-2 w-full rounded border"
+        placeholder="Search books..."
       />
       <button
         type="submit"
-        className="bg-blue-600 text-white px-4 py-2 rounded shadow"
+        disabled={!value.trim()}
+        className="bg-teal-700 text-white px-4 py-2 rounded disabled:bg-gray-400"
       >
         Search
       </button>

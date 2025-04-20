@@ -1,19 +1,24 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState, useRef } from "react";
 import axios from "axios";
 import SearchBox from "@/components/SearchBox";
 import BookCard from "@/components/BookCard";
+import LoadingSpinner from "./LoadingSpinner";
+import { TBook } from "@/types/types";
 
 const HomePage = () => {
-  const [query, setQuery] = useState("");
-  const [books, setBooks] = useState([]);
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [query, setQuery] = useState<string>("");
+  const [books, setBooks] = useState<TBook[]>([]);
+  const [error, setError] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   const fetchBooks = async (searchTerm: string) => {
-    setLoading(true);
+    setBooks([]);
     setError("");
+    setLoading(true);
     try {
       const response = await axios.get(
         `https://openlibrary.org/search.json?q=${encodeURIComponent(
@@ -23,22 +28,17 @@ const HomePage = () => {
       const data = response.data;
 
       if (data?.docs?.length > 0) {
-        setBooks(data.docs.slice(0, 20));
+        setBooks(data.docs);
       } else {
         setError("No results found.");
-        setBooks([]);
       }
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err) {
       setError("Failed to fetch books. Please try again.");
-      setBooks([]);
     } finally {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    fetchBooks("alice");
-  }, []);
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -46,30 +46,55 @@ const HomePage = () => {
     fetchBooks(query);
   };
 
+  const handleRetrySearch = () => {
+    setError("");
+    setQuery("");
+    if (inputRef.current) inputRef.current.focus();
+  };
+
   return (
-    <main className=" bg-gray-900">
-      <div className=" min-h-screen text-white flex flex-col justify-center items-center px-4 py-10">
+    <main className="bg-gray-900">
+      <div className="min-h-screen text-white flex flex-col justify-center items-center px-4 py-10">
         <div className="w-full max-w-xl mb-8">
           <SearchBox
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onSubmit={handleSearch}
+            inputRef={inputRef}
           />
         </div>
 
-        {loading && <p className="text-center">Loading...</p>}
-        {error && <p className="text-center text-red-500">{error}</p>}
+        {loading && <LoadingSpinner />}
 
-        <div className="grid gap-6 mb-8 grid-cols-2 md:lg:grid-cols-6 ">
-          {books.map((book: any) => (
-            <BookCard
-              key={book.key}
-              title={book.title}
-              author={book.author_name}
-              coverId={book.cover_i}
-            />
-          ))}
-        </div>
+        {error && !loading && (
+          <p className="text-center text-red-500">
+            {error}
+            {error === "No results found." && (
+              <span
+                onClick={handleRetrySearch}
+                className="cursor-pointer text-teal-500 underline ml-2"
+              >
+                Click here to search again.
+              </span>
+            )}
+          </p>
+        )}
+
+        {!loading && books.length > 0 && (
+          <ul className="space-y-2 text-left w-full max-w-2xl">
+            {books.map((book: TBook) => (
+              <BookCard
+                key={book.key}
+                title={book.title}
+                author_name={book.author_name}
+                edition_count={book.edition_count}
+                first_publish_year={book.first_publish_year}
+                author={book.author_name}
+                coverId={book.cover_i}
+              />
+            ))}
+          </ul>
+        )}
       </div>
     </main>
   );

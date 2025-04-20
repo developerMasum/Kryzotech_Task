@@ -1,35 +1,42 @@
-import Link from "next/link";
+"use client";
+
 import React from "react";
+import Link from "next/link";
+import { TBook } from "@/types/types";
 
-interface BookCardProps {
-  title: string;
-  author?: string[];
-  coverId?: number;
-}
+const BookCard = ({
+  title,
+  author,
+  author_name,
+  coverId,
+  first_publish_year,
+  has_fulltext,
+  edition_count,
+  ia_collection_s,
+}: TBook) => {
+  const displayAuthor = author?.[0] || author_name?.[0] || "N/A";
 
-const BookCard: React.FC<BookCardProps> = ({ title, author, coverId }) => {
-  const imageUrl = coverId
-    ? `https://covers.openlibrary.org/b/id/${coverId}-M.jpg`
-    : "https://via.placeholder.com/150x200?text=No+Cover";
+  const query = new URLSearchParams({
+    title,
+    author: (author?.length ? author : author_name)?.join(", ") || "Unknown",
+    coverId: coverId?.toString() || "0",
+    first_publish_year: first_publish_year?.toString() || "",
+    has_fulltext: has_fulltext ? "true" : "false",
+    edition_count: edition_count?.toString() || "0",
+    ia_collection_s: ia_collection_s || "",
+  }).toString();
 
   return (
-    <Link href={`/${coverId}`}>
-      <div className="overflow-hidden relative transition duration-200 transform hover:-translate-y-2">
-        <img
-          className="object-cover w-full h-48 md:h-64 xl:h-80"
-          src={imageUrl}
-          alt="book cover"
-        />
-
-        <div className="bg-black px-4 py-4  bg-opacity-75 opacity-0 hover:opacity-90 text-white absolute inset-0 transition-opacity duration-200 rounded shadow-lg hover:shadow-2xl flex flex-col ">
-          <p className="text-2xl font-semibold">{title}</p>
-          <br />
-          <p>{title.substring(0, 45)}....</p>
-          <br />
-          <p className="mt-auto font-semibold">Price:{author}</p>
-        </div>
-      </div>
-    </Link>
+    <li className="text-sm leading-relaxed list-disc ml-6">
+      <Link
+        href={`/details?${query}`}
+        className="hover:underline text-blue-600"
+      >
+        <strong>{title}</strong>
+      </Link>{" "}
+      by <span className="italic">{displayAuthor}</span>
+      {first_publish_year && ` — ${first_publish_year}`}
+    </li>
   );
 };
 
