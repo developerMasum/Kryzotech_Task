@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import SearchBox from "@/components/SearchBox";
 import BookCard from "@/components/BookCard";
 
@@ -14,14 +15,15 @@ const HomePage = () => {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch(
+      const response = await axios.get(
         `https://openlibrary.org/search.json?q=${encodeURIComponent(
           searchTerm
         )}`
       );
-      const data = await res.json();
-      if (data.docs && data.docs.length > 0) {
-        setBooks(data.docs.slice(0, 10));
+      const data = response.data;
+
+      if (data?.docs?.length > 0) {
+        setBooks(data.docs.slice(0, 20));
       } else {
         setError("No results found.");
         setBooks([]);
@@ -35,10 +37,10 @@ const HomePage = () => {
   };
 
   useEffect(() => {
-    fetchBooks("Harry Potter");
+    fetchBooks("alice");
   }, []);
 
-  const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!query.trim()) return;
     fetchBooks(query);
@@ -46,9 +48,7 @@ const HomePage = () => {
 
   return (
     <main className="min-h-screen bg-gray-900 text-white flex flex-col justify-center items-center px-4 py-10">
-      <h1 className="text-4xl font-bold mb-6 text-center">
-        📚 Book Search App
-      </h1>
+      <h1 className="text-xl font-bold mb-6 text-center">📚 Book Search App</h1>
 
       <div className="w-full max-w-xl mb-8">
         <SearchBox
@@ -61,7 +61,7 @@ const HomePage = () => {
       {loading && <p className="text-center">Loading...</p>}
       {error && <p className="text-center text-red-500">{error}</p>}
 
-      <div className="grid gap-6 mb-8 lg:grid-cols-4 sm:grid-cols-2">
+      <div className="grid gap-6 mb-8 grid-cols-2 md:lg:grid-cols-6 ">
         {books.map((book: any) => (
           <BookCard
             key={book.key}
