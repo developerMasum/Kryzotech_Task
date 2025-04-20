@@ -47,29 +47,29 @@ const HomePage = () => {
   };
 
   return (
-    <main className="min-h-screen bg-gray-900 text-white flex flex-col justify-center items-center px-4 py-10">
-      <h1 className="text-xl font-bold mb-6 text-center">📚 Book Search App</h1>
-
-      <div className="w-full max-w-xl mb-8">
-        <SearchBox
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          onSubmit={handleSearch}
-        />
-      </div>
-
-      {loading && <p className="text-center">Loading...</p>}
-      {error && <p className="text-center text-red-500">{error}</p>}
-
-      <div className="grid gap-6 mb-8 grid-cols-2 md:lg:grid-cols-6 ">
-        {books.map((book: any) => (
-          <BookCard
-            key={book.key}
-            title={book.title}
-            author={book.author_name}
-            coverId={book.cover_i}
+    <main className=" bg-gray-900">
+      <div className=" min-h-screen text-white flex flex-col justify-center items-center px-4 py-10">
+        <div className="w-full max-w-xl mb-8">
+          <SearchBox
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            onSubmit={handleSearch}
           />
-        ))}
+        </div>
+
+        {loading && <p className="text-center">Loading...</p>}
+        {error && <p className="text-center text-red-500">{error}</p>}
+
+        <div className="grid gap-6 mb-8 grid-cols-2 md:lg:grid-cols-6 ">
+          {books.map((book: any) => (
+            <BookCard
+              key={book.key}
+              title={book.title}
+              author={book.author_name}
+              coverId={book.cover_i}
+            />
+          ))}
+        </div>
       </div>
     </main>
   );

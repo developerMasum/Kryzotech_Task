@@ -13,7 +13,7 @@ const BookCard: React.FC<BookCardProps> = ({ title, author, coverId }) => {
     : "https://via.placeholder.com/150x200?text=No+Cover";
 
   return (
-    <Link href={`/books/${coverId}`}>
+    <Link href={`/${coverId}`}>
       <div className="overflow-hidden relative transition duration-200 transform hover:-translate-y-2">
         <img
           className="object-cover w-full h-48 md:h-64 xl:h-80"
