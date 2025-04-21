@@ -5,7 +5,9 @@ Built with **Next.js**, **TypeScript**, and **Tailwind CSS**, this app lets user
 
 🌐 **Live Demo**: [https://nex-library.vercel.app/](https://nex-library.vercel.app/)
 
-![Nex Library Screenshot](https://i.ibb.co.com/1YJkkLKr/Screenshot-2025-04-21-223812.png)
+## Screenshots
+
+![Search Result]([https://via.placeholder.com/468x300?text=App+Screenshot+Here](https://i.ibb.co.com/1YJkkLKr/Screenshot-2025-04-21-223812.png))
 
 ---
 
